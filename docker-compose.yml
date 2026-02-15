@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: nextcloud-db
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /mnt/nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+
+  redis:
+    image: redis:alpine
+    container_name: nextcloud-redis
+    restart: always
+
+  app:
+    image: nextcloud:latest
+    container_name: nextcloud-app
+    restart: always
+    depends_on:
+      - db
+      - redis
+    environment:
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+      - NEXTCLOUD_ADMIN_USER=${NC_ADMIN_USER}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NC_ADMIN_PASS}
+    volumes:
+      - /mnt/storage/media/nextcloud/data:/var/www/html
+      - /mnt/storage/media/nextcloud/userdata:/var/www/html/data
+      - /srv/logs/nextcloud:/var/www/html/data/nextcloud.log
+    ports:
+      - 8080:80
+
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: always
+    ports: 
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - /mnt/storage/media/nextcloud/nginx/data:/data
+      - /mnt/storage/media/nextcloud/nginx/letsencrypt:/etc/letsencrypt
