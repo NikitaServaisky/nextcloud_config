@@ -11,11 +11,15 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
+    networks:
+      - nextcloud-net
 
   redis:
     image: redis:alpine
     container_name: nextcloud-redis
     restart: always
+    networks:
+      - nextcloud-net
 
   app:
     image: nextcloud:latest
@@ -37,16 +41,24 @@ services:
       - /mnt/storage/media/nextcloud/userdata:/var/www/html/data
       - /srv/logs/nextcloud:/var/www/html/data/nextcloud.log
     ports:
-      - 8080:80
+      - 8090:80
+    networks:
+      - nextcloud-net
 
   nginx-proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy-manager
     restart: always
-    ports: 
+    ports:  
       - '80:80'
       - '81:81'
       - '443:443'
     volumes:
       - /mnt/storage/media/nextcloud/nginx/data:/data
       - /mnt/storage/media/nextcloud/nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - nextcloud-net
+
+networks:
+  nextcloud-net:
+    driver: bridge
