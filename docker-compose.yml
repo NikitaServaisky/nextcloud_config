@@ -45,6 +45,21 @@ services:
     networks:
       - nextcloud-net
 
+  notify_push:
+    image: nextcloud:latest
+    container_name: nextcloud-push
+    restart: always
+    environment:
+      - PORT=7867
+      - NEXTCLOUD_URL=https://homeserver25.kozow.com
+    entrypoint: /var/www/html/custom_apps/notify_push/bin/x86_64/notify_push /var/www/html/config/config.php
+    volumes:
+      - /mnt/storage/media/nextcloud/data:/var/www/html:ro
+    networks:
+      - nextcloud-net
+    depends_on:
+      - app
+
   nginx-proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy-manager
