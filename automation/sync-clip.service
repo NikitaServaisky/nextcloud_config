@@ -1,0 +1,13 @@
+[Unit]
+Description=Nextcloud Sync to Clipboard Service
+After=network.target
+
+[Service]
+# Points to the automation script in the home directory
+ExecStart=/bin/bash /home/nikita/.sync_to_clipboard.sh
+Restart=always
+RestartSec=3
+
+[Install]
+# Ensures the service starts for the user session
+WantedBy=default.target
