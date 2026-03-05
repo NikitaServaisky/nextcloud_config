@@ -32,10 +32,11 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_HOST=db
-      - REDIS_HOST=redis
       - NEXTCLOUD_ADMIN_USER=${NC_ADMIN_USER}
       - NEXTCLOUD_ADMIN_PASSWORD=${NC_ADMIN_PASS}
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+      - LC_ALL=C.UTF-8
     volumes:
       - /mnt/storage/media/nextcloud/data:/var/www/html
       - /mnt/storage/media/nextcloud/userdata:/var/www/html/data
