@@ -41,6 +41,20 @@ services:
       - /mnt/storage/media/nextcloud/data:/var/www/html
       - /mnt/storage/media/nextcloud/userdata:/var/www/html/data
       - /srv/logs/nextcloud:/var/www/html/data/nextcloud.log
+    entrypoint: 
+      - /bin/sh
+      - -c
+      - |
+        # Accept MS Core Fonts license automatically
+        echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+        apt-get update
+        # Install OCR engines, LibreOffice for previews, and multilingual fonts
+        apt-get install -y \
+          tesseract-ocr tesseract-ocr-heb tesseract-ocr-rus \
+          libreoffice \
+          fonts-liberation fonts-noto-core fonts-noto-ui-core fonts-noto-extra \
+          ttf-mscorefonts-installer
+        /entrypoint.sh apache2-foreground
     ports:
       - 8090:80
     networks:
