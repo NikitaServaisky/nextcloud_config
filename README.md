@@ -1,22 +1,25 @@
-# Nextcloud Deployment with Fast-Sync Pipeline
+# Nextcloud Deployment with Fast-Sync & AI Search Pipeline
 
 ## Docker Architecture
-This stack is managed via Docker Compose and includes:
+This stack is managed via Docker Compose and optimized for high-performance self-hosting:
 - **App:** Nextcloud (Latest).
+- **Search Engine:** Elasticsearch 8.x – Provides lightning-fast full-text indexing.
+- **OCR Engine:** Tesseract OCR – Integrated within the app container to process images and PDFs.
 - **DB:** MariaDB 10.11 with READ-COMMITTED isolation.
 - **Cache:** Redis for performance and file locking.
-- **Push:** High-performance-backend (notify_push).
+- **Push:** High-performance-backend (notify_push) for instant sync.
 - **Proxy:** Nginx Proxy Manager (NPM) handling SSL and Websockets.
 
 ## Critical Configurations & Bug Fixes
-- **Websocket Support:** Must be enabled in NPM for the Push notifications to function correctly.
-- **Trusted Proxies:** Added the proxy internal IP to `config.php` to prevent header stripping.
-- **Background Tasks:** Switched to `Cron` mode for optimal performance.
+- **Elasticsearch Integration:** Configured with a 1GB JVM Heap limit to ensure stability on homelab hardware.
+- **Multi-Language OCR:** Tesseract is configured to recognize English, Hebrew, and Russian text.
+- **Websocket Support:** Enabled in NPM to allow the `notify_push` backend to function.
+- **Background Tasks:** Switched from AJAX to system `Cron` for reliable automation.
 
 ## Client-Side Automation (Arch Linux)
-The automation consists of two files (included in this repo):
-1. `sync_to_clipboard.sh`: The watcher script.
-2. `sync-clip.service`: The Systemd user service.
+To complete the "Universal Clipboard" experience, the following tools are included:
+1. `sync_to_clipboard.sh`: A watcher script using `inotifywait`.
+2. `sync-clip.service`: A Systemd user service to run the watcher in the background.
 
 ### Installation:
 1. Copy `sync_to_clipboard.sh` to your home directory.
