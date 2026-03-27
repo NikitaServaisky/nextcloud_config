@@ -11,6 +11,8 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
+      - PHP_MEMORY_LIMIT=1G
+      - PHP_UPLOAD_LIMIT=10G
     networks:
       - nextcloud-net
 
