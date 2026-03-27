@@ -13,6 +13,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - PHP_MEMORY_LIMIT=1G
       - PHP_UPLOAD_LIMIT=10G
+      - APACHE_SERVERNAME=homeserver25.kozow.com
     networks:
       - nextcloud-net
 
