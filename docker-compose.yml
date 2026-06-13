@@ -119,3 +119,5 @@ services:
 networks:
   nextcloud-net:
     driver: bridge
+  proxy-net:
+    external: true
