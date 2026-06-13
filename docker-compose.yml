@@ -16,6 +16,7 @@ services:
       - APACHE_SERVERNAME=homeserver25.kozow.com
     networks:
       - nextcloud-net
+      - proxy-net
 
   redis:
     image: redis:alpine
@@ -23,6 +24,7 @@ services:
     restart: always
     networks:
       - nextcloud-net
+      - proxy-net
 
   app:
     image: nextcloud:latest
@@ -62,6 +64,7 @@ services:
       - 8090:80
     networks:
       - nextcloud-net
+      - proxy-net
 
   notify_push:
     image: nextcloud:latest
@@ -75,6 +78,7 @@ services:
       - /mnt/storage/media/nextcloud/data:/var/www/html:ro
     networks:
       - nextcloud-net
+      - proxy-net
     depends_on:
       - app
 
@@ -95,6 +99,7 @@ services:
       - /mnt/storage/media/nextcloud/elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       - nextcloud-net
+      - proxy-net
 
   nginx-proxy:
     image: 'jc21/nginx-proxy-manager:latest'
@@ -109,6 +114,7 @@ services:
       - /mnt/storage/media/nextcloud/nginx/letsencrypt:/etc/letsencrypt
     networks:
       - nextcloud-net
+      - proxy-net
 
 networks:
   nextcloud-net:
