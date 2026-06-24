@@ -99,21 +99,6 @@ services:
       - nextcloud-net
       - proxy-net
 
-  nginx-proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginx-proxy-manager
-    restart: always
-    ports:  
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - /mnt/storage/media/nextcloud/nginx/data:/data
-      - /mnt/storage/media/nextcloud/nginx/letsencrypt:/etc/letsencrypt
-    networks:
-      - nextcloud-net
-      - proxy-net
-
 networks:
   nextcloud-net:
     driver: bridge
