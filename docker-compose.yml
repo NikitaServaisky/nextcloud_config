@@ -15,7 +15,6 @@ services:
       - PHP_UPLOAD_LIMIT=10G
       - APACHE_SERVERNAME=homeserver25.kozow.com
     networks:
-      - nextcloud-net
       - proxy-net
 
   redis:
@@ -23,7 +22,6 @@ services:
     container_name: nextcloud-redis
     restart: always
     networks:
-      - nextcloud-net
       - proxy-net
 
   app:
@@ -50,10 +48,8 @@ services:
       - /bin/sh
       - -c
       - |
-        # Accept MS Core Fonts license automatically
         echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
         apt-get update
-        # Install OCR engines, LibreOffice for previews, and multilingual fonts
         apt-get install -y \
           tesseract-ocr tesseract-ocr-heb tesseract-ocr-rus \
           libreoffice \
@@ -61,7 +57,6 @@ services:
           ttf-mscorefonts-installer
         /entrypoint.sh apache2-foreground
     networks:
-      - nextcloud-net
       - proxy-net
 
   notify_push:
@@ -73,9 +68,8 @@ services:
       - NEXTCLOUD_URL=https://homeserver25.kozow.com
     entrypoint: /var/www/html/custom_apps/notify_push/bin/x86_64/notify_push /var/www/html/config/config.php
     volumes:
-      - /mnt/storage/media/nextcloud/data:/var/www/html:ro
+      - /mnt/storage/media/nextcloud/data:/var/html:ro
     networks:
-      - nextcloud-net
       - proxy-net
     depends_on:
       - app
@@ -96,11 +90,8 @@ services:
     volumes:
       - /mnt/storage/media/nextcloud/elasticsearch_data:/usr/share/elasticsearch/data
     networks:
-      - nextcloud-net
       - proxy-net
 
 networks:
-  nextcloud-net:
-    driver: bridge
   proxy-net:
     external: true
