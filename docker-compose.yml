@@ -60,8 +60,6 @@ services:
           fonts-liberation fonts-noto-core fonts-noto-ui-core fonts-noto-extra \
           ttf-mscorefonts-installer
         /entrypoint.sh apache2-foreground
-    ports:
-      - 8090:80
     networks:
       - nextcloud-net
       - proxy-net
