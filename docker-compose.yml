@@ -59,7 +59,7 @@ services:
     networks:
       - proxy-net
 
-notify_push:
+  notify_push:
     image: ghcr.io/nextcloud/notify_push:latest
     container_name: nextcloud-push
     restart: always
@@ -76,7 +76,7 @@ notify_push:
       - redis
       - db
 
-elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
     container_name: elasticsearch
     restart: always
