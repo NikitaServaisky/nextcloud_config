@@ -100,4 +100,5 @@ networks:
   proxy-net:
     external: true
   internal-net:
+    name: internal-net
     internal: true
