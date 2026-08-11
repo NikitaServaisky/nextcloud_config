@@ -15,14 +15,14 @@ services:
       - PHP_UPLOAD_LIMIT=10G
       - APACHE_SERVERNAME=homeserver25.kozow.com
     networks:
-      - proxy-net
+      - internal-net
 
   redis:
     image: redis:alpine
     container_name: nextcloud-redis
     restart: always
     networks:
-      - proxy-net
+      - internal-net
 
   app:
     image: nextcloud:latest
@@ -58,6 +58,7 @@ services:
         /entrypoint.sh apache2-foreground
     networks:
       - proxy-net
+      - internal-net
 
   notify_push:
     image: ghcr.io/nextcloud/notify_push:latest
@@ -71,6 +72,7 @@ services:
       - /mnt/storage/media/nextcloud/data:/var/www/html:ro
     networks:
       - proxy-net
+      - internal-net
     depends_on:
       - app
       - redis
@@ -92,8 +94,10 @@ services:
     volumes:
       - /mnt/storage/media/nextcloud/elasticsearch_data:/usr/share/elasticsearch/data
     networks:
-      - proxy-net
+      - internal-net
 
 networks:
   proxy-net:
     external: true
+  internal-net:
+    internal: true
