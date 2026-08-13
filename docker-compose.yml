@@ -56,6 +56,9 @@ services:
           fonts-liberation fonts-noto-core fonts-noto-ui-core fonts-noto-extra \
           ttf-mscorefonts-installer
         /entrypoint.sh apache2-foreground
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     networks:
       - proxy-net
       - internal-net
